@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚡ XENO Data Validator Platform
 
-## Getting Started
+**XENO** is a premium, high-performance web platform designed to ingest, validate, and intelligently auto-correct large CSV datasets directly in the browser. 
 
-First, run the development server:
+Instead of rejecting imperfect data or forcing users to manually map columns, XENO acts as an intelligent agent. It uses statistical inference to understand your data's schema on the fly and deploys an aggressive auto-correction pipeline to salvage, format, and fill data contextually.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![XENO Architecture](https://img.shields.io/badge/Architecture-Web_Worker_Based-6366f1) ![Tech Stack](https://img.shields.io/badge/Tech-Next.js_|_Tailwind_|_Framer-black)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🧠 Dynamic Schema Inference
+XENO doesn't rely on you telling it what your columns mean. When you upload a file, XENO samples the rows and uses **majority-vote statistical inference** to automatically determine the column types (`Email`, `Phone`, `Date`, `Number`, `Boolean`, or `String`).
 
-## Learn More
+### 🛠️ Intelligent Auto-Correction Pipeline
+XENO never just skips a "bad" row. It attempts to actively rescue the data:
+- **Dates:** Intelligently parses and normalizes chaotic formats (e.g., `15/03/2024`, `April 5 2024`) into a standard `YYYY-MM-DD HH:mm:ss`.
+- **Numbers:** Extracts numerical data from messy text, strips currencies (e.g., `$2,500.00` → `2500`), and handles commas gracefully.
+- **Booleans:** Standardizes variations (`yes`, `1`, `TRUE`, `on`, `active`) into pure `True` or `False`.
+- **Phones:** Cleans formatting characters and pads short numbers to proper lengths.
+- **Emails:** Attempts to fix common typos (e.g., double `@`, missing `.com`) before rejecting them.
 
-To learn more about Next.js, take a look at the following resources:
+### 🏗️ Contextual Data Interpolation
+A true platform never outputs empty cells. If XENO encounters a `null`, empty, or irreversibly corrupted value, it uses context to fill the void intelligently:
+- **Numbers:** Generates a truly unique numeric sequence using timestamps and row indices.
+- **Dates:** Defaults to the last seen valid date in that specific column to maintain temporal consistency.
+- **Emails:** Generates a placeholder sequence (e.g., `user_42@placeholder.com`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ⚡ Blazing Fast Browser Processing
+Privacy and performance are paramount. XENO processes everything locally on the client's machine. By delegating the heavy parsing and validation engine to a **dedicated background Web Worker**, the main UI thread remains buttery smooth even when processing millions of rows.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🎨 Premium UI/UX
+Built to impress. The platform features a phase-based state machine that guides the user from Upload → Preview → Processing → Results.
+- **Glassmorphism & Aurora Gradients:** A high-end dark mode interface (with full light mode support).
+- **Micro-Animations:** Powered by `framer-motion` for fluid state transitions and pulse processing indicators.
+- **Interactive Dashboards:** Paginated reports detailing exactly *what* was auto-corrected and *why*.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 💻 Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** Next.js (React)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Engine Dependencies:** 
+  - `papaparse` (High-speed CSV chunking)
+  - `date-fns` (Robust date normalization)
+  - `jszip` & `file-saver` (Batch output generation)
+
+---
+
+## 🚀 Getting Started
+
+### Local Development
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Deployment
+
+This platform is optimized and ready for production deployment. The easiest way to deploy is via **Vercel**:
+
+1. Push this repository to GitHub.
+2. Log into [Vercel](https://vercel.com) and import the repository.
+3. Vercel will automatically detect the Next.js framework and deploy it instantly.
+
+---
+
+*Designed and developed for the XENO implementation team.*
